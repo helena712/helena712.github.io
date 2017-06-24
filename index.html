@@ -68,6 +68,72 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-node01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/06/24/node01/" class="article-date">
+  <time datetime="2017-06-24T06:18:01.000Z" itemprop="datePublished">2017-06-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/06/24/node01/">node01</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>생활코딩 <a href="https://opentutorials.org/course/2136/11949" target="_blank" rel="external">https://opentutorials.org/course/2136/11949</a></p>
+<p>웹 애플리케이션은 사용자의 입력주소에 따라 페이지를 보여주고, 패스에 따라 여러 아웃풋을 보여준다.</p>
+<h3 id="쿼리-스트링"><a href="#쿼리-스트링" class="headerlink" title="쿼리 스트링"></a>쿼리 스트링</h3><p>URL 구성</p>
+<ul>
+<li>http(웹페이지를 요청하고 받아내기 위한 프로토콜)+도메인(서버컴퓨터 위치 주소)+패스+ ?(쿼리스트링)</li>
+</ul>
+<p>쿼리스트링은 path로 받는 주소 외에 추가적으로 넘겨받는 값이 있을 때 사용한다.</p>
+<p>API Reference(명령어 사전) 참고하기<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">app.get(<span class="string">'/user'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>)</span>&#123; &#125;)</div></pre></td></tr></table></figure></p>
+<p>사용자가 user 로 들어왔을 때, express는 function을 호출하고,<br>이 function는 첫번째 인자로 req를 두번째 인자로 res를 전달한다.</p>
+<p>localhost:3000/topic?id=1<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">app.get(<span class="string">'/topic'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>)</span>&#123;</div><div class="line">  <span class="keyword">var</span> topics = [</div><div class="line">    <span class="string">'Javascript is....'</span>,</div><div class="line">    <span class="string">'Nodejs is...'</span>,</div><div class="line">    <span class="string">'Express is...'</span></div><div class="line">  ];</div><div class="line">  <span class="keyword">var</span> output = <span class="string">`</span></div><div class="line">  &lt;a href="/topic?id=0"&gt;JavaScript&lt;/a&gt;&lt;br&gt;</div><div class="line">  &lt;a href="/topic?id=1"&gt;Nodejs&lt;/a&gt;&lt;br&gt;</div><div class="line">  &lt;a href="/topic?id=2"&gt;Express&lt;/a&gt;&lt;br&gt;&lt;br&gt;</div><div class="line">  <span class="subst">$&#123;topics[req.query.id]&#125;</span></div><div class="line">  `</div><div class="line">  res.send(output);</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<p>req객제가 가지는 query라는 객체에 id라는 프로퍼티를 이용해 값을 이용할 수 있다.<br>어떤 쿼리 스트링을 전달하는지에 따라 웹어플리케이션이 다르게 동작한다.</p>
+<h3 id="시멘틱URL"><a href="#시멘틱URL" class="headerlink" title="시멘틱URL"></a>시멘틱URL</h3><p>쿼리스트링보다 의미론적으로 url로 만드는 방식<br>localhost:3000/topic/id<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">app.get(<span class="regexp">/topic/</span>:id, <span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>)</span>&#123;</div><div class="line">  res.send(req.params.id);</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<p>id라는 가변적인 정보를 잡아낸다.<br>이 가변적 정보는 params라는 객체를 사용해 이용할 수 있다.</p>
+<h3 id="서버와-웹브라우저가-상호작용하는-방식"><a href="#서버와-웹브라우저가-상호작용하는-방식" class="headerlink" title="서버와 웹브라우저가 상호작용하는 방식"></a>서버와 웹브라우저가 상호작용하는 방식</h3><ul>
+<li>GET<br>웹브라우저에서 어떤 정보를 서버에 요청</li>
+</ul>
+<p>localhost:3000/form_receiver’?title=hello&amp;description=world<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">app.get(‘/form_receiver’, <span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>)</span>&#123;</div><div class="line">	<span class="keyword">var</span> title = req.query.title;</div><div class="line">	<span class="keyword">var</span> description = res.query.description;</div><div class="line">	res.send(title+’,’+description);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>form은 action을 통해 정보를 어디로 전달할지 알려주고,<br>웹브라우저는 form에 따라 정보를 가진 url를 생성해 서버로 전달해 준다.<br>** method를 생략하면 GET이 됨</p>
+<ul>
+<li>POST<br>사용자의 정보를 서버로 전달</li>
+</ul>
+<p>method를 POST으로 하면, 데이터를 서버로 전송하지만,<br>url로 전송하지는 않는다. 그렇기에 url주소는 같다.</p>
+<p>기본적으로 post로 전달된 것을 undefind여서,<br>body-parser라는 미들웨어(확장기능)을 사용해야한다.</p>
+<p><strong> 1. body-parser 설치 </strong><br>npm install body-parser —saver<br><strong> 2. body-parser 모듈 가져오기 </strong><br>var bodyParser = require(‘body=-parser’);<br><strong> 3. body-parser 모듈 사용하기 </strong><br>app.use(bodyParser.urlencoded({ extended: false}))<br>** use는 애플리케이션에 붙인다는 의미</p>
+<p>애플리케이션에 들어오는 모든 요청들은 미들웨어를 통과한 후 사용할수 있다.</p>
+<p>이제 body-parser가 실행이 될 때,<br>post방식이 있다면, body라는 객체를 사용할 수 있다.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">app.post(‘/form_receiver’, <span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>)</span>&#123;</div><div class="line">	<span class="keyword">var</span> title = req.body.title;</div><div class="line">	<span class="keyword">var</span> description = res.body.description;</div><div class="line">	res.send(title+’,’+description);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://helena712.github.io/2017/06/24/node01/" data-id="cj4ax8uu40008orx0hr731mul" class="article-share-link">Share</a>
+      
+        <a href="https://helena712.github.io/2017/06/24/node01/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Scrum" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/06/18/Scrum/" class="article-date">
@@ -159,7 +225,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://helena712.github.io/2017/06/18/Scrum/" data-id="cj42o60ie0001eex08m7k7d9n" class="article-share-link">Share</a>
+      <a data-url="https://helena712.github.io/2017/06/18/Scrum/" data-id="cj4ax8utf0000orx0ukwwqtu7" class="article-share-link">Share</a>
       
         <a href="https://helena712.github.io/2017/06/18/Scrum/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -213,7 +279,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://helena712.github.io/2017/06/17/Why-we-do-UX/" data-id="cj42o60ij0002eex0b2d6j8s0" class="article-share-link">Share</a>
+      <a data-url="https://helena712.github.io/2017/06/17/Why-we-do-UX/" data-id="cj4ax8utw0004orx0apso6f09" class="article-share-link">Share</a>
       
         <a href="https://helena712.github.io/2017/06/17/Why-we-do-UX/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -278,7 +344,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://helena712.github.io/2017/06/17/Why-we-have-to-check-Web-Accessibility/" data-id="cj42o60iq0004eex0tu0b8i3l" class="article-share-link">Share</a>
+      <a data-url="https://helena712.github.io/2017/06/17/Why-we-have-to-check-Web-Accessibility/" data-id="cj4ax8uu00005orx006vqddd3" class="article-share-link">Share</a>
       
         <a href="https://helena712.github.io/2017/06/17/Why-we-have-to-check-Web-Accessibility/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -326,7 +392,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://helena712.github.io/2017/06/17/2017-하코사세미나/" data-id="cj42o60i60000eex0sg6rgbcg" class="article-share-link">Share</a>
+      <a data-url="https://helena712.github.io/2017/06/17/2017-하코사세미나/" data-id="cj4ax8utm0001orx0zfh3fv04" class="article-share-link">Share</a>
       
         <a href="https://helena712.github.io/2017/06/17/2017-하코사세미나/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -373,7 +439,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://helena712.github.io/2017/05/25/hello-world/" data-id="cj42o60it0005eex0ah6smw2f" class="article-share-link">Share</a>
+      <a data-url="https://helena712.github.io/2017/05/25/hello-world/" data-id="cj4ax8utu0003orx05u5x1648" class="article-share-link">Share</a>
       
         <a href="https://helena712.github.io/2017/05/25/hello-world/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -397,7 +463,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/scrum/">scrum</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ux/">ux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scrum/">scrum</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ux/">ux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a></li></ul>
     </div>
   </div>
 
@@ -407,7 +473,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/scrum/" style="font-size: 10px;">scrum</a> <a href="/tags/ux/" style="font-size: 10px;">ux</a> <a href="/tags/web/" style="font-size: 10px;">web</a>
+      <a href="/tags/nodejs/" style="font-size: 10px;">nodejs</a> <a href="/tags/scrum/" style="font-size: 10px;">scrum</a> <a href="/tags/ux/" style="font-size: 10px;">ux</a> <a href="/tags/web/" style="font-size: 10px;">web</a>
     </div>
   </div>
 
@@ -429,6 +495,10 @@
       <ul>
         
           <li>
+            <a href="/2017/06/24/node01/">node01</a>
+          </li>
+        
+          <li>
             <a href="/2017/06/18/Scrum/">Scrum</a>
           </li>
         
@@ -442,10 +512,6 @@
         
           <li>
             <a href="/2017/06/17/2017-하코사세미나/">2017 하코사세미나</a>
-          </li>
-        
-          <li>
-            <a href="/2017/05/25/hello-world/">How to use Hexo</a>
           </li>
         
       </ul>
